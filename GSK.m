@@ -69,9 +69,9 @@ for problem_size = [10 30 50 100]  % 问题规模，决策变量的数量(D)
             end
             
             %%%%%%%%%%%%%%%%%%%%%%%% Parameter settings%%%%%%%%%%
-            KF=0.5;% Knowledge Factor
-            KR=0.9;%Knowledge Ratio
-            K=10*ones(pop_size,1);%Knowledge Rate  ！！！这个K是一个size = NP*1，value = 10的矩阵
+            KF=0.5;  % Knowledge Factor
+            KR=0.9;  %Knowledge Ratio
+            K=10*ones(pop_size,1);  %Knowledge Rate  ！！！这个K是一个size = NP*1，value = 10的矩阵
             
             g=0;  % 当前代数初始化为0
             % main loop
@@ -98,7 +98,7 @@ for problem_size = [10 30 50 100]  % 问题规模，决策变量的数量(D)
                 end
                 R0=1:pop_size;  %R01:排序前下标(自然顺序)
                 Gained_Shared_Senior=zeros(pop_size, problem_size);  % 高级交叉 size = NP*D
-                ind=fitness(R0)>fitness(R2);% 随机Better People适应度比自然顺序的适应度好的下标
+                ind=fitness(R0)>fitness(R2);  % 随机Better People适应度比自然顺序的适应度好的下标
                 if(sum(ind)>0)  % 对这些个体进行高级交叉：xnew_ij = xold_ij + KF*[(x_i-1 - x_i+1) + (x_m - x_i)]
                     Gained_Shared_Senior(ind,:) = pop(ind,:) + KF*ones(sum(ind), problem_size) .* (pop(R1(ind),:) - pop(ind,:) + pop(R2(ind),:) - pop(R3(ind), :)) ;
                 end
@@ -142,10 +142,8 @@ for problem_size = [10 30 50 100]  % 问题规模，决策变量的数量(D)
                 
                 popold = pop;
                 popold(Child_is_better_index == 2, :) = ui(Child_is_better_index == 2, :);  % new优于old进入种群
-                           
-               % fprintf('NFES:%d, bsf_fit:%1.6e,pop_Size:%d,D_Gained_Shared_Junior:%2.2e,D_Gained_Shared_Senior:%2.2e\n', nfes,bsf_fit_var,pop_size,problem_size*sum(sum(D_Gained_Shared_Junior))/(pop_size*problem_size),problem_size*sum(sum(D_Gained_Shared_Senior))/(pop_size*problem_size))
-  
-            end % end while loop  种群迭代了G_max代
+                
+            end  % end while loop  种群迭代了G_max代
             
             bsf_error_val = bsf_fit_var - optimum;  % 计算误差
             if bsf_error_val < val_2_reach
@@ -163,7 +161,7 @@ for problem_size = [10 30 50 100]  % 问题规模，决策变量的数量(D)
                 dim2(run_id,:)=log10(run_funcvals);  % 适应度取对数
             end
             %%%%%%%%%%%%%%%%%%%%%%%%%%%
-        end %% end 1 run
+        end  % end 1 run
         
         % save ststiatical output in analysis file%%%%
         analysis(func,1)=min(outcome);  % 数据分析：最小值、中位数、最大值、平均值、标准差、找到中位数的时候
@@ -185,9 +183,9 @@ for problem_size = [10 30 50 100]  % 问题规模，决策变量的数量(D)
         dim11=dim1(median_figure,:);
         dim22=dim2(median_figure,:);
         file_name=sprintf('Figures\\Figure_Problem#%s_Run#%s',int2str(func),int2str(median_figure));  % 保存文件为Figure_Problem#1_Run#%1 2 ... 51.mat
-        save(file_name,'dim1','dim2');  % 保存适应度
-    end %% end 1 function run
+        save(file_name,'dim11','dim22');  % 保存中值适应度
+    end  % end 1 function run
     
     file_name=sprintf('Results\\analysis_%s_CEC2017_problem_size#%s',Alg_Name,int2str(problem_size));  % 保存文件为analysis_GSK_CEC2017_problem_size#10.mat
     save(file_name,'analysis');  % 保存数据分析
-end %% end all function runs in all dimensions
+end  % end all function runs in all dimensions
